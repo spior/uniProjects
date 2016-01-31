@@ -37,22 +37,22 @@ void isEndangered(fig board[8][8], int team, int row, int col)
 {
 	if (board[row][col].team != team)
 	{
-		cout << "Фигурата на тези координати не е от Вашия отбор." << endl;
+		cout << "Figurata na tezi koordinati ne e ot Vashiq otbor." << endl;
 		return;
 	}
 
 	if (board[row][col].team == 0)
 	{
-		cout << "Няма фигура на тези координати." << endl;
+		cout << "Nqma figura na tezi koordinati." << endl;
 		return;
 	}
 
 	//	Тъй като поддържаме само пешки, проверяваме дали пред нас от ляво и дясно има друга фигура.\
 			Също, вместо да връщаме стойност -- принтираме, защото не знам вие как го правите. Ако искаш си го направи така.
-	if (board[row - 1][col - 1].team != team)
+	if (row > 0 && board[row - 1][col - 1].team != team)
 		cout << row - 1 << "," << col - 1;
 
-	if (board[row - 1][col + 1].team != team)
+	if (row > 0 && board[row - 1][col + 1].team != team)
 		cout << row - 1 << "," << col + 1;
 }
 
@@ -60,13 +60,13 @@ void moveFig(fig board[8][8], int team, int row, int col, int newRow, int newCol
 {
 	if (board[row][col].team == 0)
 	{
-		cout << "Няма фигура на тези координати." << endl;
+		cout << "Nqma figura na tezi koordinati." << endl;
 		return;
 	}
 
 	if (board[row][col].team != team)
 	{
-		cout << "Фигурата на тези координати не е от Вашия отбор." << endl;
+		cout << "Figurata na tezi koordinati ne e ot Vashiq otbor." << endl;
 		return;
 	}
 
@@ -82,7 +82,7 @@ void moveFig(fig board[8][8], int team, int row, int col, int newRow, int newCol
 	}
 	else
 	{
-		cout << "Фигурата не може да бъде преместена на тези координати." << endl;
+		cout << "Figurata ne moje da bude premestena na tezi koordinati." << endl;
 		return;
 	}
 }
@@ -95,19 +95,19 @@ int main()
 		M = 0,	// M - black
 		P = 0;	// P - requests
 
-	cout << "Въведете броя на фигурите на играч 1: ";
+	cout << "Vavedete broq na figurite na igrach 1: ";
 	cin >> N;
 
-	cout << "Въведете броя на фигурите на играч 2: ";
+	cout << "Vavedete broq na figurite na igrach 2: ";
 	cin >> M;
 
-	cout << "Въведете броя на заявките: ";
+	cout << "Vavedete broq na zaqvkite: ";
 	cin >> P;
 
 	if (N > 8 * 2 || N < 0 ||
 		M > 8 * 2 || M < 0)
 	{
-		cout << "Грешен интервал. Прекалено много фигури." << endl;
+		cout << "Greshen interval. Prekaleno mnogo figuri." << endl;
 		return 1;
 	}
 
@@ -120,7 +120,7 @@ int main()
 			char input[512] = { 0 };
 			int row = 0, col = 0;
 
-			cout << "Въведете фигура по зададения формат: ";
+			cout << "Vavedete figura po zadadeniq format: ";
 			cin >> input;
 
 			if (strlen(input) != 4 ||
@@ -129,13 +129,21 @@ int main()
 				!isalpha(input[2]) || input[2] < 'a' || input[2] > 'z' ||	// Третият  
 				!isalpha(input[3]) || input[3] < 'a' || input[3] > 'z')		//			и четвъртият елемент трябва да са букви от 'a' do 'z'
 			{
-				cout << "Грешни данни. Моля, въведете нови." << endl;
+				cout << "Greshni danni. Molq, vavedete novi." << endl;
 				i--;
 				continue;
 			}
 
 			row = input[1] - '0' - 1;
 			col = 8 - (input[0] - 'a');
+
+			if(board[row][col].team > 0)
+			{
+				cout << "Greshni danni. Na tova mqsto veche ima figura. Molq, vavedete novi." << endl;
+				i--;
+				continue;
+			}
+
 			switch (input[2])
 			{
 			case 'k':
@@ -157,7 +165,7 @@ int main()
 				board[row][col].type = TYPE_pa;
 				break;
 			default:
-				cout << "Грешни данни. Моля, въведете нови." << endl;
+				cout << "Greshni danni. Molq, vavedete novi." << endl;
 				i--;
 				continue;
 				break;
@@ -168,40 +176,43 @@ int main()
 
 	for (int i = 0; i < P; i++)
 	{
-		cout << "Заявка 1: Извежда застрашени от Ваша фигура фигури. Моля, въведете данни за Ваша фигура." << endl;
+		cout << "Zaqvka 1: Izvejda zastresheni ot Vasha figura figuri. Molq, vavedete danni za Vasha figura." << endl;
 
 		while (1)
 		{
 			int team = 0,
 				row = 0, col = 0;
 
-			cout << "Въведете отбор: ";
+			cout << "Vavedete otbor: ";
 			cin >> team;
 
 			if (team > 1 || team < 0)
 			{
-				cout << "Грешен интервал. Отборите са 1 за бели и 2 за черни. Моля, въведете нови данни." << endl;
+				cout << "Greshen interval. Otborite sa 1 za beli i 2 za cherni. Molq, vavedete nowi danni." << endl;
 				continue;
 			}
 
-			cout << "Въведете ред: ";
-			cin >> row;
+			char input[512] = { 0 };
+			cout << "Vavedete koordinati: ";
+			cin >> input;
 
-			cout << "Въведете колона: ";
-			cin >> col;
-
-			if (row > 8 || row < 0 ||
-				col > 8 || col < 0)
+			if (strlen(input) != 4 ||
+				!isalpha(input[0]) || input[0] < 'a' || input[0] > 'h' ||
+				!isdigit(input[1]) || isdigit(input[1]) > 8)
 			{
-				cout << "Грешен интервал. Извън дъската. Моля, въведете нови данни." << endl;
+				cout << "Greshni danni. Molq, vavedete novi." << endl;
+				i--;
 				continue;
 			}
+
+			row = input[1] - '0' - 1;
+			col = 8 - (input[0] - 'a');
 
 			isEndangered(board, team, row, col);
 			break;
 		}
 
-		cout << "Заявка 2: Преместване на фигура. Моля, въведете данни за фигурата, която искате да преместите." << endl;
+		cout << "Zaqvka 2: Premestvane na figura. Molq, vavedete danni za figurata, koqto iskate da premestite." << endl;
 
 		while (1)
 		{
@@ -209,41 +220,45 @@ int main()
 				row = 0, col = 0,
 				newRow = 0, newCol = 0;
 
-			cout << "Въведете отбор: ";
+			cout << "Vavedete otbor: ";
 			cin >> team;
 
 			if (team > 1 || team < 0)
 			{
-				cout << "Грешен интервал. Отборите са 1 за бели и 2 за черни. Моля, въведете нови данни." << endl;
+				cout << "Greshen interval. Otborite sa 1 za beli i 2 za cherni. Molq, vavedete novi danni." << endl;
 				continue;
 			}
 
-			cout << "Въведете ред: ";
-			cin >> row;
-
-			cout << "Въведете колона: ";
-			cin >> col;
-
-			if (row > 8 || row < 0 ||
-				col > 8 || col < 0)
+			char input[512] = { 0 };
+			cout << "Vavedete koordinati: ";
+			cin >> input;			
+			
+			if (strlen(input) != 4 ||
+				!isalpha(input[0]) || input[0] < 'a' || input[0] > 'h' ||
+				!isdigit(input[1]) || isdigit(input[1]) > 8 )
 			{
-				cout << "Грешен интервал. Извън дъската. Моля, въведете нови данни." << endl;
+				cout << "Greshni danni. Molq, vavedete novi." << endl;
+				i--;
 				continue;
 			}
 
-			cout << "Въведете нов ред: ";
-			cin >> row;
+			row = input[1] - '0' - 1;
+			col = 8 - (input[0] - 'a');
 
-			cout << "Въведете нова колона: ";
-			cin >> col;
+			cout << "Vavedete novi koordinati: ";
+			cin >> input;
 
-			if (row > 8 || row < 0 ||
-				col > 8 || col < 0)
+			if (strlen(input) != 4 ||
+				!isalpha(input[0]) || input[0] < 'a' || input[0] > 'h' ||
+				!isdigit(input[1]) || isdigit(input[1]) > 8)
 			{
-				cout << "Грешен интервал. Извън дъската. Моля, въведете нови данни." << endl;
+				cout << "Greshni danni. Molq, vavedete novi." << endl;
+				i--;
 				continue;
 			}
 
+			newRow = input[1] - '0' - 1;
+			newCol = 8 - (input[0] - 'a');
 			moveFig(board, team, row, col, newRow, newCol);
 			break;
 		}
