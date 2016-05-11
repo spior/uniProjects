@@ -6,7 +6,7 @@
  * -----------------------------------------------------
  *
  * Това е моята имплементация на пъзела със зелката, козата и вълка.
- * Фермер си купл зелка, коза и вълк и трябва да прекоси реката с тях.
+ * Фермер си купил зелка, коза и вълк и трябва да прекоси реката с тях.
  * Лодката му може да пренася само него и още една покупка наведнъж.
  * Не можем да оставим зелката сама с козата, нито козата сама с вълка.
  */
@@ -47,7 +47,7 @@ int main()
 		// Информираме клиента за сегашния статус на обсотятелствата
 		cout << "You are currently " << (boatCrossed ? "on the other side" : "on the initial side") << " of the river." << endl;
 		cout << "Current status of purchases: " << endl;
-		for (int i = 0; i < 3; i++, completed = purchases[0].crossed && purchases[1].crossed && purchases[2].crossed)
+		for (int i = 0; i < 3; i++, completed = purchases[0].crossed && purchases[1].crossed && purchases[2].crossed && boatCrossed)
 			cout << i + 1 << ". " << (purchases[i].t == CABBAGE ? "Cabbage: " : purchases[i].t == GOAT ? "Goat:    " : purchases[i].t == WOLF ? "Wolf:    " : "ayy") << (purchases[i].crossed ? "crossed" : "not crossed") << endl;
 
 		// Ако сме решили пъзела, излизаме от цикъла
