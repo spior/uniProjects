@@ -61,19 +61,24 @@ int main()
 		int id = 0;
 		cin >> id;
 
-		if (id > 3)
+		if (id > 0 && id > 3)
 		{ // Грешен вход
 			cout << "Wront id. ";
 			goto enterval;
 		}
-		else if (id - 1 != CABBAGE && id - 1 != GOAT && purchases[CABBAGE].crossed == purchases[GOAT].crossed)
+		else if (id > 0 && id - 1 != CABBAGE && id - 1 != GOAT && purchases[CABBAGE].crossed == purchases[GOAT].crossed)
 		{ // Проверка дали оставяме зелката сама с козата
 			cout << "Can't leave cabbage alone with goat." << endl;
 			goto enterval;
 		}
-		else if (id - 1 != GOAT && id - 1 != WOLF && purchases[GOAT].crossed == purchases[WOLF].crossed)
+		else if (id > 0 && id - 1 != GOAT && id - 1 != WOLF && purchases[GOAT].crossed == purchases[WOLF].crossed)
 		{ // Проверка дали оставяме козата сама с вълка
 			cout << "Can't leave goat alone with wolf." << endl;
+			goto enterval;
+		}
+		else if (id > 0 && purchases[id - 1].crossed != boatCrossed)
+		{ // Проверка дали избрания продукт е на същата страна, на която сме ние
+			cout << "This id is on the other side of the river. You can't move it from this side." << endl;
 			goto enterval;
 		}
 
